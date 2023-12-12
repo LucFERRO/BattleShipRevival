@@ -6,10 +6,10 @@ async function seedPlayers(client) {
     // Create the "players" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS players (
-        id INT NOT NULL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
+        player_id INT NOT NULL PRIMARY KEY,
+        player_name VARCHAR(255) NOT NULL,
         job_id INT NOT NULL,
-        FOREIGN KEY (job_id) REFERENCES jobs(id),
+        FOREIGN KEY (job_id) REFERENCES jobs(job_id),
         lv INT NOT NULL
       );
     `;
@@ -20,9 +20,9 @@ async function seedPlayers(client) {
     const insertedPlayers = await Promise.all(
       players.map(async (player) => {
         return client.sql`
-        INSERT INTO players (id, name, job_id, lv)
-        VALUES (${player.id}, ${player.name}, ${player.job_id}, ${player.lv})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO players (player_id, player_name, job_id, lv)
+        VALUES (${player.player_id}, ${player.player_name}, ${player.job_id}, ${player.lv})
+        ON CONFLICT (player_id) DO NOTHING;
       `;
       }),
     );
@@ -44,8 +44,8 @@ async function seedJobs(client) {
     // Create the "jobs" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS jobs (
-        id INT NOT NULL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
+        job_id INT NOT NULL PRIMARY KEY,
+        job_name VARCHAR(255) NOT NULL,
         health_growth INT NOT NULL,
         strength_growth INT NOT NULL,
         crit_bonus INT NOT NULL
@@ -58,9 +58,9 @@ async function seedJobs(client) {
     const insertedJobs = await Promise.all(
       jobs.map(async (job) => {
         return client.sql`
-        INSERT INTO jobs (id, name, health_growth, strength_growth, crit_bonus)
-        VALUES (${job.id}, ${job.name}, ${job.health_growth}, ${job.strength_growth}, ${job.crit_bonus})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO jobs (job_id, job_name, health_growth, strength_growth, crit_bonus)
+        VALUES (${job.job_id}, ${job.job_name}, ${job.health_growth}, ${job.strength_growth}, ${job.crit_bonus})
+        ON CONFLICT (job_id) DO NOTHING;
       `;
       }),
     );

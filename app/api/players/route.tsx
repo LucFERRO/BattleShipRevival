@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from '@vercel/postgres';
+import { fetchPlayers } from "@/app/lib/data";
 
 export async function GET (req: NextRequest, context: any) {
 
-    const playerList = await sql``
-
-    return NextResponse.json({
-        test: ''
-    })
+    const playerList = await fetchPlayers()
+    return NextResponse.json(playerList)
 }
 
 export async function POST (req: NextRequest) {
